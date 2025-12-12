@@ -115,5 +115,33 @@ document.addEventListener('DOMContentLoaded', () => {
     getContextBtn.addEventListener('click', getTabContext);
 
     // Initial context load
+    checkBackendHealth();
     getTabContext();
 });
+
+async function checkBackendHealth() {
+    const statusEl = document.getElementById('status-indicator');
+    if (!statusEl) return;
+
+    try {
+        // Ping the root endpoint to check if server is alive
+        const response = await fetch(`${API_BASE_URL}/`, {
+            method: 'GET',
+            cache: 'no-cache'
+        });
+
+        if (response.ok) {
+            statusEl.className = 'status-online';
+            statusEl.title = "System Online";
+        } else {
+            statusEl.className = 'status-offline';
+            statusEl.title = `Server Error: ${response.status}`;
+        }
+    } catch (error) {
+        console.error("Health check failed:", error);
+        statusEl.className = 'status-offline';
+        statusEl.title = `Offline: ${error.message}`;
+        // Optionally notify user in chat if critical
+        // appendMessage("⚠️ Network Error: Cannot reach backend", "system");
+    }
+}
