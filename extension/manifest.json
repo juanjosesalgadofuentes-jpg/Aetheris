@@ -1,3 +1,4 @@
+{
     "manifest_version": 3,
     "name": "Aetheris",
     "version": "1.0",
@@ -18,7 +19,7 @@
         "default_path": "sidepanel.html"
     },
     "action": {
-        "default_title": "Open Smart Web Atlas"
+        "default_title": "Open Aetheris"
     },
     "content_scripts": [
         {

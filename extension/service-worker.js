@@ -7,7 +7,7 @@ chrome.sidePanel
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: 'openSidePanel',
-        title: 'Open Smart Web Atlas',
+        title: 'Open Aetheris',
         contexts: ['all']
     });
 });

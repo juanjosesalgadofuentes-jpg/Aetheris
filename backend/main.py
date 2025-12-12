@@ -35,7 +35,7 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Smart Web Atlas Backend (Vertex AI Powered) is running"}
+    return {"message": "Aetheris Backend (Vertex AI Powered) is running"}
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
@@ -57,7 +57,7 @@ async def chat(request: ChatRequest):
         User Query: {request.query}
         
         Instructions:
-        You are Smart Web Atlas. Answer the user's query based strictly on the provided page content.
+        You are Aetheris. Answer the user's query based strictly on the provided page content.
         Be concise, accurate, and professional.
         """
 
