@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import os
 import vertexai
-from vertexai.generative_models import GenerativeModel, SafetySetting
+from vertexai.language_models import ChatModel
 
 # Load environment variables (useful for local dev, but Cloud Run uses built-in env vars)
 from dotenv import load_dotenv
@@ -31,9 +31,9 @@ LOCATION = os.getenv("GOOGLE_CLOUD_REGION", "us-central1")
 # This uses Application Default Credentials (IAM), so no API keys needed!
 try:
     vertexai.init(project=PROJECT_ID, location=LOCATION)
-    # Using the generic valid alias for the stable model
-    model = GenerativeModel("gemini-pro")
-    print(f"Vertex AI initialized for project {PROJECT_ID} in {LOCATION}")
+    # Using PaLM 2 (chat-bison) which is widely available in older/restricted projects
+    chat_model = ChatModel.from_pretrained("chat-bison")
+    print(f"Vertex AI (PaLM 2) initialized for project {PROJECT_ID} in {LOCATION}")
 except Exception as e:
     print(f"Warning: Vertex AI initialization failed (expected during build/without creds): {e}")
 
@@ -46,50 +46,38 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Aetheris Backend (Vertex AI Powered) is running"}
+    return {"message": "Aetheris Backend (PaLM 2 Powered) is running"}
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
     try:
-        # 1. Prepare the Prompt
-        # In a real "Prompt Registry" workflow, you might load a specific prompt template here.
-        # For now, we construct the prompt professionally.
+        # 1. Prepare the Context
+        # PaLM 2 handles context in the 'context' parameter of start_chat
         
-        truncated_content = request.content[:30000] # Gemini handles large context well!
+        truncated_content = request.content[:10000] # PaLM context window is smaller than Gemini
         
-        prompt = f"""
-        Context Information:
-        - Page Title: {request.title}
+        context_prompt = f"""
+        You are Aetheris, an AI assistant for web browsing.
+        
+        Current Page Context:
+        - Title: {request.title}
         - URL: {request.url}
-        
-        Page Content:
-        {truncated_content}
-        
-        User Query: {request.query}
+        - Content: {truncated_content}
         
         Instructions:
-        You are Aetheris. Answer the user's query based strictly on the provided page content.
+        Answer the user's query based strictly on the provided page content.
         Be concise, accurate, and professional.
         """
 
-        # 2. Call Vertex AI (Gemini)
-        # Note: No secret keys passed here. Security is handled by Google Cloud IAM.
+        # 2. Call Vertex AI (PaLM 2)
+        chat = chat_model.start_chat(context=context_prompt)
         
-        # Construct chat history if available (simplified for this demo)
-        chat_history = []
-        if request.history:
-            # Logic to Map history to vertexai Content/Part objects would go here
-            pass
-
-        response = model.generate_content(
-            prompt,
-            generation_config={
-                "max_output_tokens": 1000,
-                "temperature": 0.2,
-                "top_p": 0.8,
-                "top_k": 40,
-            },
-            stream=False,
+        response = chat.send_message(
+            request.query,
+            max_output_tokens=1024,
+            temperature=0.2,
+            top_p=0.8,
+            top_k=40
         )
 
         answer = response.text
