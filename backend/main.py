@@ -31,8 +31,8 @@ LOCATION = os.getenv("GOOGLE_CLOUD_REGION", "us-central1")
 # This uses Application Default Credentials (IAM), so no API keys needed!
 try:
     vertexai.init(project=PROJECT_ID, location=LOCATION)
-    # Using the standard stable Gemini model (Maximum Compatibility)
-    model = GenerativeModel("gemini-1.0-pro")
+    # Using the generic valid alias for the stable model
+    model = GenerativeModel("gemini-pro")
     print(f"Vertex AI initialized for project {PROJECT_ID} in {LOCATION}")
 except Exception as e:
     print(f"Warning: Vertex AI initialization failed (expected during build/without creds): {e}")
