@@ -1,17 +1,17 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -116,15 +116,29 @@ textarea:focus {
 }
 
 button {
-button:hover {
-  background-color: #0056b3;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+#send-btn {
+    background: #38bdf8;
+    color: #0f172a;
+    padding: 0 20px;
+}
+
+#send-btn:hover {
+    background: #0ea5e9;
+    transform: translateY(-1px);
 }
 
 .controls {
-  text-align: center;
+    text-align: center;
 }
 
 .controls button {
-  background-color: #6c757d;
-  font-size: 0.8rem;
+    background-color: #6c757d;
+    font-size: 0.8rem;
 }
