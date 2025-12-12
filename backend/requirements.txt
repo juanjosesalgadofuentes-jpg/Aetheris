@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+google-cloud-aiplatform
+python-dotenv
+# gunicorn is often used for prod but uvicorn is fine for async. 
+# We might want gunicorn in the Dockerfile if we weren't using uvicorn directly.

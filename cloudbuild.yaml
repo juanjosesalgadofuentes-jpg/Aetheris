@@ -1,0 +1,31 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-t", "gcr.io/$PROJECT_ID/smart-web-atlas-backend", "./backend"]
+
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/smart-web-atlas-backend"]
+
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "smart-web-atlas-backend"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/smart-web-atlas-backend"
+      - "--region"
+      - "us-central1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated" # WARNING: Allow public access. Change to --no-allow-unauthenticated for private.
+      - "--set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+images:
+  - "gcr.io/$PROJECT_ID/smart-web-atlas-backend"
