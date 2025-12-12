@@ -5,10 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const getContextBtn = document.getElementById('get-context-btn');
 
     // CONFIGURATION
-    // Change this to your Cloud Run URL after deployment (e.g., "https://smart-web-atlas-xyz.run.app")
-    // Keep it as localhost for local testing.
-    const API_BASE_URL = "http://localhost:8000";
-    // const API_BASE_URL = "https://<YOUR-CLOUD-RUN-URL>";
+    // Aetheris Production Backend
+    const API_BASE_URL = "https://genai-app-imagecompositionwithmulti-1-17654946525-212653614700.us-central1.run.app";
 
     let currentContext = null;
 
