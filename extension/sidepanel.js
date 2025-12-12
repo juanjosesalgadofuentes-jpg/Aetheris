@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CONFIGURATION
     // Aetheris Production Backend
-    const API_BASE_URL = "https://genai-app-imagecompositionwithmulti-1-17654946525-212653614700.us-central1.run.app";
+    const API_BASE_URL = "https://smart-web-atlas-backend-212653614700.us-central1.run.app";
 
     let currentContext = null;
 
