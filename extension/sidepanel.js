@@ -24,6 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab) return;
 
+        // Ensure content script is injected
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['content.js']
+            });
+        } catch (e) {
+            // Script might already be there or cannot access this tab (e.g. chrome:// urls)
+            console.log("Injection skipped or failed:", e);
+        }
+
         try {
             const response = await chrome.tabs.sendMessage(tab.id, { action: "getPageContext" });
             if (response) {
