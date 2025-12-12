@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('send-btn');
     const getContextBtn = document.getElementById('get-context-btn');
 
+    // CONFIGURATION
+    // Change this to your Cloud Run URL after deployment (e.g., "https://smart-web-atlas-xyz.run.app")
+    // Keep it as localhost for local testing.
+    const API_BASE_URL = "http://localhost:8000";
+    // const API_BASE_URL = "https://<YOUR-CLOUD-RUN-URL>";
+
     let currentContext = null;
 
     // Function to append messages to chat
@@ -50,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.value = '';
 
         try {
-            const response = await fetch('http://localhost:8000/api/chat', {
+            const response = await fetch(`${API_BASE_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
