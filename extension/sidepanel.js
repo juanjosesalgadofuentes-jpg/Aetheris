@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab) return;
 
+        if (tab.url.startsWith('chrome://') || tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+            appendMessage("I cannot read browser settings pages. Please try me on a real website (like Wikipedia or Google News).", "system");
+            return;
+        }
+
         // Ensure content script is injected
         try {
             await chrome.scripting.executeScript({
