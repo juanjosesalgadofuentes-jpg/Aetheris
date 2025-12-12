@@ -59,9 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!query) return;
 
         if (!currentContext) {
+            appendMessage("Reading page...", "system");
             await getTabContext();
             if (!currentContext) {
-                appendMessage("Please refresh context first.", "system");
+                appendMessage("I still can't see the page. Please try refreshing the website tab.", "system");
                 return;
             }
         }
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     sendBtn.addEventListener('click', sendQuery);
-    userInput.addEventListener('keypress', (e) => {
+    userInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendQuery();
