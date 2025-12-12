@@ -91,15 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                const errorText = await response.text();
+                throw new Error(`Server Error ${response.status}: ${errorText}`);
             }
 
             const data = await response.json();
             appendMessage(data.response, "assistant");
 
         } catch (error) {
-            console.error("Error calling backend:", error);
-            appendMessage("Error communicating with backend.", "system");
+            console.error("Background Error:", error);
+            appendMessage(`Error: ${error.message}`, "system");
         }
     }
 
