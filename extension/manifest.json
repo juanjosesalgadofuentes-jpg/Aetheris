@@ -1,8 +1,7 @@
-{
     "manifest_version": 3,
-    "name": "Smart Web Atlas",
+    "name": "Aetheris",
     "version": "1.0",
-    "description": "Chat with your web pages using AI.",
+    "description": "Your Antigravity Source of Truth. Navigate the web with Vertex AI.",
     "permissions": [
         "sidePanel",
         "activeTab",
