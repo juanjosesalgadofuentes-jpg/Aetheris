@@ -36,20 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 files: ['content.js']
             });
         } catch (e) {
-            // Script might already be there or cannot access this tab (e.g. chrome:// urls)
             console.log("Injection skipped or failed:", e);
+            // Don't return, maybe it's already there
         }
 
         try {
-            const response = await chrome.tabs.sendMessage(tab.id, { action: "getPageContext" });
+            // Race sendMessage with a 2-second timeout so it doesn't hang forever
+            const response = await Promise.race([
+                chrome.tabs.sendMessage(tab.id, { action: "getPageContext" }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout getting page content")), 2000))
+            ]);
+
             if (response) {
                 currentContext = response;
-                console.log("Context loaded:", currentContext);
-                appendMessage("Context updated for: " + currentContext.title, "system");
+                appendMessage("Context updated: " + currentContext.title.substring(0, 30) + "...", "system");
             }
         } catch (error) {
             console.error("Error getting context:", error);
-            appendMessage("Could not connect to page. Try refreshing the page.", "system");
+            appendMessage("Could not read page: " + error.message, "system");
+            appendMessage("Try reloading the page.", "system");
         }
     }
 
