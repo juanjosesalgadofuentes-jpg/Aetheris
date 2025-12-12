@@ -32,7 +32,7 @@ LOCATION = os.getenv("GOOGLE_CLOUD_REGION", "us-central1")
 try:
     vertexai.init(project=PROJECT_ID, location=LOCATION)
     # Using a modern Gemini model
-    model = GenerativeModel("gemini-1.5-flash-001")
+    model = GenerativeModel("gemini-1.5-flash")
     print(f"Vertex AI initialized for project {PROJECT_ID} in {LOCATION}")
 except Exception as e:
     print(f"Warning: Vertex AI initialization failed (expected during build/without creds): {e}")
